@@ -23,12 +23,12 @@ pub fn get_item(client: DynamoClient) -> Result(response.Response(BitArray), Dyn
   let request_with_headers =
     req
     |> request.set_header("content-type", "application/x-amz-json-1.0; charset=utf-8")
-    |> request.set_method(http.Get)
+    |> request.set_method(http.Post)
     |> request.set_body(<<>>)
   
   let signer =
     aws4_request.signer(
-      access_key_id: client.access_ke_id,
+      access_key_id: client.access_key_id,
       secret_access_key: client.secret_access_key,
       region: client.region,
       service: "dynamodb",
