@@ -10,6 +10,7 @@ import gleam/httpc
 import gleam/result
 import gleam/string
 import aws4_request
+import gleam/bit_array
 
 // Define the GetItemRequest type
 pub type GetItemRequest {
@@ -52,7 +53,12 @@ pub fn new_get_item_request(table_name: String, key: Dict(String, AttributeValue
 }
 
 
-pub fn get_item(client: DynamoClient) -> Result(response.Response(BitArray), DynamoError) {
+pub fn get_item(
+  client: DynamoClient, 
+  request: GetItemRequest
+) -> Result(response.Response(BitArray), DynamoError) {
+  let json_body = get_item_request_to_json(request)  // Convert request to JSON
+  
   use req <- result.try(
     request.to(string.concat([
       "https://dynamodb.", client.region, ".", client.domain
@@ -65,7 +71,7 @@ pub fn get_item(client: DynamoClient) -> Result(response.Response(BitArray), Dyn
     |> request.set_header("content-type", "application/x-amz-json-1.0; charset=utf-8")
     |> request.set_header("X-Amz-Target", "DynamoDB_20120810.GetItem")
     |> request.set_method(http.Post)
-    |> request.set_body(<<>>)
+    |> request.set_body(bit_array.from_string(json_body))  // Use the JSON body
   
   let signer =
     aws4_request.signer(

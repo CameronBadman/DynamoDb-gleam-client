@@ -42,32 +42,6 @@ resource "aws_dynamodb_table" "test_table" {
     name = "id"
     type = "S" # String
   }
-
-  # Optional: Add a sort key if needed
-  # range_key       = "sort_key"
-  # attribute {
-  #   name = "sort_key"
-  #   type = "S"
-  # }
-
-  # Optional: Global Secondary Index
-  # global_secondary_index {
-  #   name               = "GSI1"
-  #   hash_key           = "gsi1_pk"
-  #   range_key          = "gsi1_sk"
-  #   projection_type    = "ALL"
-  # }
-
-  # attribute {
-  #   name = "gsi1_pk"
-  #   type = "S"
-  # }
-
-  # attribute {
-  #   name = "gsi1_sk"
-  #   type = "S"
-  # }
-
   tags = {
     Name        = var.table_name
     Environment = var.environment
