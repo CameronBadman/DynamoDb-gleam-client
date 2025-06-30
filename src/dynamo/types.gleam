@@ -36,3 +36,8 @@ pub type DynamoClient {
     domain: String,
   )
 }
+
+
+
+
+

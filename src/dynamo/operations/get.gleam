@@ -1,5 +1,5 @@
 import dynamo/attributes.{type AttributeValue, key_to_json}
-import dynamo/types.{type DynamoClient, type DynamoError, HttpError, UriError}
+import dynamo/types.{type DynamoClient, DynamoClient, type DynamoError, HttpError, UriError}
 import gleam/dict.{type Dict}
 import gleam/json
 import gleam/option.{type Option}
@@ -57,11 +57,12 @@ pub fn get_item(
   client: DynamoClient, 
   request: GetItemRequest
 ) -> Result(response.Response(BitArray), DynamoError) {
-  let json_body = get_item_request_to_json(request)  // Convert request to JSON
+  let DynamoClient(access_key_id:, secret_access_key:, region:, domain:) = client
+  let json_body = get_item_request_to_json(request)
   
   use req <- result.try(
     request.to(string.concat([
-      "https://dynamodb.", client.region, ".", client.domain
+      "https://dynamodb.", region, ".", domain
     ]))
     |> result.map_error(fn(_) { UriError })
   )
@@ -75,9 +76,9 @@ pub fn get_item(
   
   let signer =
     aws4_request.signer(
-      access_key_id: client.access_key_id,
-      secret_access_key: client.secret_access_key,
-      region: client.region,
+      access_key_id: access_key_id,
+      secret_access_key: secret_access_key,
+      region: region,
       service: "dynamodb",
     )
   
