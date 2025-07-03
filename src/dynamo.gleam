@@ -1,7 +1,7 @@
 import dynamo/client
 import dynamo/attributes.{string_key}
 import dynamo/operations/get.{new_get_item_request, get_item}
-import dynamo/types.{handle_error}
+import dynamo/types/error.{handle_error}
 import gleam/io
 import gleam/int
 import gleam/bit_array

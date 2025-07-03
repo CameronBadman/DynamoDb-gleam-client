@@ -1,4 +1,4 @@
-import dynamo/types.{type DynamoClient, DynamoClient}
+import dynamo/types/client.{type DynamoClient, DynamoClient}
 import gleam/result 
 
 pub fn build(access_key_id: String, secret_access_key: String) -> Result(DynamoClient, String)  {

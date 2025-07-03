@@ -1,5 +1,14 @@
 import dynamo/attributes.{type AttributeValue, key_to_json}
-import dynamo/types.{type DynamoClient, DynamoClient, type DynamoError, HttpError, UriError}
+
+import dynamo/types/client.{
+type DynamoClient, DynamoClient
+}
+import dynamo/types/error.{
+type DynamoError, HttpError, UriError
+}
+
+
+
 import gleam/dict.{type Dict}
 import gleam/json
 import gleam/option.{type Option}
