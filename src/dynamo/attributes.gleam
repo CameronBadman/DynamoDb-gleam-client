@@ -1,8 +1,8 @@
+import gleam/bit_array
 import gleam/dict.{type Dict}
 import gleam/json
-import gleam/option.{type Option}
-import gleam/bit_array
 import gleam/list
+import gleam/option.{type Option}
 
 pub type AttributeValue {
   String(String)
@@ -37,12 +37,19 @@ pub fn attribute_value_to_json(value: AttributeValue) -> json.Json {
     Null -> json.object([#("NULL", json.bool(True))])
     StringSet(ss) -> json.object([#("SS", json.array(ss, json.string))])
     NumberSet(ns) -> json.object([#("NS", json.array(ns, json.string))])
-    BinarySet(bs) -> json.object([#("BS", json.array(bs, fn(b) { 
-      json.string(bit_array.base64_encode(b, False)) 
-    }))])
-    List(items) -> json.object([#("L", json.array(items, attribute_value_to_json))])
+    BinarySet(bs) ->
+      json.object([
+        #(
+          "BS",
+          json.array(bs, fn(b) {
+            json.string(bit_array.base64_encode(b, False))
+          }),
+        ),
+      ])
+    List(items) ->
+      json.object([#("L", json.array(items, attribute_value_to_json))])
     Map(map) -> {
-      let map_json = 
+      let map_json =
         map
         |> dict.to_list
         |> list.map(fn(pair) {
@@ -54,7 +61,6 @@ pub fn attribute_value_to_json(value: AttributeValue) -> json.Json {
     }
   }
 }
-
 
 pub fn key_to_json(key: Dict(String, AttributeValue)) -> json.Json {
   key
@@ -71,8 +77,10 @@ pub fn string_key(name: String, value: String) -> Dict(String, AttributeValue) {
   |> dict.insert(name, String(value))
 }
 
-
-pub fn new_get_item_request(table_name: String, key: Dict(String, AttributeValue)) -> GetItemRequest {
+pub fn new_get_item_request(
+  table_name: String,
+  key: Dict(String, AttributeValue),
+) -> GetItemRequest {
   GetItemRequest(
     table_name: table_name,
     key: key,
