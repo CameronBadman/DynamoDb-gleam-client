@@ -1,15 +1,13 @@
 import dynamo/client
-import dynamo/attributes.{string_key}
-import dynamo/operations/get.{new_get_item_request, get_item}
 import dynamo/types/error.{handle_error}
 import gleam/io
 import gleam/int
 import gleam/bit_array
+import dynamo/builders/get.{get_req, with_consistent_read, exec}
 
 pub fn main() {
-  let secret_key = ""
   let access_key = ""
-  
+  let secret_key = ""
   let client_result = 
     client.build(access_key, secret_key)
     |> client.with_region("us-east-1")
@@ -22,13 +20,12 @@ pub fn main() {
     }
   }
   
-  // Now client is guaranteed to be valid - no more Result handling needed
-  let get_request = new_get_item_request(
-    "gleam-test-table",
-    string_key("id", "test-user-123")
-  )
+  let get_req = client 
+    |> get_req("gleam-test-table", "id", "test-user-123")
+    |> with_consistent_read(True)
+    |> exec()
   
-  case get_item(client, get_request) {
+  case get_req {
     Ok(response) -> {
       io.println("Status: " <> int.to_string(response.status))
       case bit_array.to_string(response.body) {

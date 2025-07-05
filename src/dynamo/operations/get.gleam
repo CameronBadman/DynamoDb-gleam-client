@@ -1,15 +1,9 @@
-import dynamo/attributes.{type AttributeValue, key_to_json}
-
-import dynamo/types/client.{
-type DynamoClient, DynamoClient
-}
+import dynamo/attributes.{string_key_to_json}
+import dynamo/types/client.{DynamoClient}
 import dynamo/types/error.{
 type DynamoError, HttpError, UriError
 }
 
-
-
-import gleam/dict.{type Dict}
 import gleam/json
 import gleam/option.{type Option}
 import gleam/http
@@ -20,21 +14,12 @@ import gleam/result
 import gleam/string
 import aws4_request
 import gleam/bit_array
+import dynamo/types/builders.{type GetBuilder} 
 
-// Define the GetItemRequest type
-pub type GetItemRequest {
-  GetItemRequest(
-    table_name: String,
-    key: Dict(String, AttributeValue),
-    consistent_read: Option(Bool),
-    projection_expression: Option(String),
-  )
-}
-
-pub fn get_item_request_to_json(request: GetItemRequest) -> String {
+pub fn get_builder_to_json(request: GetBuilder) -> String {
   let base_object = [
     #("TableName", json.string(request.table_name)),
-    #("Key", key_to_json(request.key)),
+    #("Key", string_key_to_json(request.key_name, request.key_value)),
   ]
   
   let with_consistent_read = case request.consistent_read {
@@ -51,23 +36,11 @@ pub fn get_item_request_to_json(request: GetItemRequest) -> String {
   |> json.to_string
 }
 
-// Helper function to create a GetItem request
-pub fn new_get_item_request(table_name: String, key: Dict(String, AttributeValue)) -> GetItemRequest {
-  GetItemRequest(
-    table_name: table_name,
-    key: key,
-    consistent_read: option.None,
-    projection_expression: option.None,
-  )
-}
-
-
 pub fn get_item(
-  client: DynamoClient, 
-  request: GetItemRequest
+  request: GetBuilder,
 ) -> Result(response.Response(BitArray), DynamoError) {
-  let DynamoClient(access_key_id:, secret_access_key:, region:, domain:) = client
-  let json_body = get_item_request_to_json(request)
+  let DynamoClient(access_key_id:, secret_access_key:, region:, domain:) = request.client
+  let json_body = get_builder_to_json(request)
   
   use req <- result.try(
     request.to(string.concat([
@@ -81,7 +54,7 @@ pub fn get_item(
     |> request.set_header("content-type", "application/x-amz-json-1.0; charset=utf-8")
     |> request.set_header("X-Amz-Target", "DynamoDB_20120810.GetItem")
     |> request.set_method(http.Post)
-    |> request.set_body(bit_array.from_string(json_body))  // Use the JSON body
+    |> request.set_body(bit_array.from_string(json_body))  
   
   let signer =
     aws4_request.signer(
