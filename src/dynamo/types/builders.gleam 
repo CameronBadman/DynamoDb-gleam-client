@@ -1,1 +1,10 @@
-
+pub type GetBuilder {
+  GetBuilder(
+    client: DynamoClient,
+    table_name: String,
+    key_name: String,
+    key_value: String,
+    consistent_read: Bool,
+    projection_expression: Option(String),
+  )
+}
