@@ -5,7 +5,7 @@ type DynamoError, HttpError, UriError
 }
 
 import gleam/json
-import gleam/option.{type Option}
+import gleam/option
 import gleam/http
 import gleam/http/request
 import gleam/http/response
