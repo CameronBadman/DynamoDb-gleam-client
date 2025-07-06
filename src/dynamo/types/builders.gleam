@@ -1,7 +1,7 @@
 import dynamo/types/client.{type DynamoClient}
-import gleam/option.{type Option}
 import gleam/dict.{type Dict}
 import gleam/json
+import gleam/option.{type Option}
 
 pub type GetBuilder {
   GetBuilder(

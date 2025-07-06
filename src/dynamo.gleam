@@ -1,4 +1,6 @@
-import dynamo/builders/get.{exec, get_req, with_composite_key, with_projection, with_consistent_read}
+import dynamo/builders/get.{
+  exec, get_req, with_composite_key, with_consistent_read, with_projection,
+}
 import dynamo/client
 import dynamo/types/error.{handle_error}
 import gleam/bit_array
