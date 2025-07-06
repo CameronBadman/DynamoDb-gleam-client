@@ -18,8 +18,8 @@ pub fn main() {
 
   let client = case client_result {
     Ok(client) -> client
-    Error(msg) -> {
-      io.println("❌ Client creation failed: " <> msg)
+    Error(err) -> {
+      io.println(handle_error(err))
       panic
     }
   }
@@ -36,8 +36,8 @@ pub fn main() {
     Ok(response) -> {
       io.println("Status: " <> int.to_string(response.status))
       case bit_array.to_string(response.body) {
-        Ok(body_string) -> io.println("Response body: " <> body_string)
-        Error(_) -> io.println("Could not convert response body to string")
+        Ok(body_string) -> io.println(body_string)
+        Error(_) -> io.println("failed")
       }
     }
     Error(err) -> {
