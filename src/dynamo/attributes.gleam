@@ -51,7 +51,6 @@ pub fn attribute_value_to_json(value: AttributeValue) -> json.Json {
   }
 }
 
-pub fn string_key_to_json(name: String, value: String) -> json.Json {
-  [#(name, attribute_value_to_json(String(value)))]
-  |> json.object
+pub fn key(key_name: String, key_value: String) -> json.Json {
+  json.object([#(key_name, attribute_value_to_json(String(key_value)))])
 }

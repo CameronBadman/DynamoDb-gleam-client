@@ -1,13 +1,12 @@
 import dynamo/types/client.{type DynamoClient}
 import gleam/option.{type Option}
+import gleam/dict.{type Dict}
+import gleam/json
 
 pub type GetBuilder {
   GetBuilder(
     client: DynamoClient,
-    table_name: String,
-    key_name: String,
-    key_value: String,
-    consistent_read: Option(Bool),
-    projection_expression: Option(String),
+    keys: Dict(String, json.Json),
+    json_fields: Dict(String, json.Json),
   )
 }

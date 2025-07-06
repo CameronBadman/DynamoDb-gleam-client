@@ -1,4 +1,4 @@
-import dynamo/builders/get.{exec, get_req, with_consistent_read}
+import dynamo/builders/get.{exec, get_req, with_composite_key, with_projection, with_consistent_read}
 import dynamo/client
 import dynamo/types/error.{handle_error}
 import gleam/bit_array
@@ -24,8 +24,10 @@ pub fn main() {
 
   let get_result =
     client
-    |> get_req("gleam-test-table", "1id", "tes1t-user-123")
+    |> get_req("gleam-test-table", "id", "test-user-123")
+    |> with_composite_key("id", "test-user-123")
     |> with_consistent_read(True)
+    |> with_projection("id, email")
     |> exec()
 
   case get_result {
