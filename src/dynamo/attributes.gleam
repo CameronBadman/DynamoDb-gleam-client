@@ -1,6 +1,6 @@
+import gleam/bit_array
 import gleam/dict.{type Dict}
 import gleam/json
-import gleam/bit_array
 import gleam/list
 
 pub type AttributeValue {
@@ -26,11 +26,19 @@ pub fn attribute_value_to_json(value: AttributeValue) -> json.Json {
     Null -> json.object([#("NULL", json.bool(True))])
     StringSet(ss) -> json.object([#("SS", json.array(ss, json.string))])
     NumberSet(ns) -> json.object([#("NS", json.array(ns, json.string))])
-    BinarySet(bs) -> json.object([#("BS", json.array(bs, fn(b) { 
-      json.string(bit_array.base64_encode(b, False))}))])
-    List(items) -> json.object([#("L", json.array(items, attribute_value_to_json))])
+    BinarySet(bs) ->
+      json.object([
+        #(
+          "BS",
+          json.array(bs, fn(b) {
+            json.string(bit_array.base64_encode(b, False))
+          }),
+        ),
+      ])
+    List(items) ->
+      json.object([#("L", json.array(items, attribute_value_to_json))])
     Map(map) -> {
-      let map_json = 
+      let map_json =
         map
         |> dict.to_list
         |> list.map(fn(pair) {

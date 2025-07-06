@@ -1,5 +1,5 @@
-import gleam/option.{type Option}
 import dynamo/types/client.{type DynamoClient}
+import gleam/option.{type Option}
 
 pub type GetBuilder {
   GetBuilder(
