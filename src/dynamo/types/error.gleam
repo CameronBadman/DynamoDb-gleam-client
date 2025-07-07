@@ -7,6 +7,9 @@ pub type DynamoError {
   HttpError(httpc.HttpError)
   UriError
   RequestBuildError
+  ParseError(String)
+  UnsupportedType
+  InvalidFormat
 }
 
 pub fn handle_error(error: DynamoError) -> String {
@@ -18,5 +21,8 @@ pub fn handle_error(error: DynamoError) -> String {
     HttpError(httpc.FailedToConnect(_, _)) -> "Failed to connect"
     UriError -> "Invalid URI"
     RequestBuildError -> "Failed to build request"
+    ParseError(msg) -> "ParseError: " <> msg
+    UnsupportedType -> "UnsupportedType"
+    InvalidFormat -> "InvalidFormat"
   }
 }

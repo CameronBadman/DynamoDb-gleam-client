@@ -1,4 +1,5 @@
-import dynamo/attributes.{String, attribute_value_to_json, key}
+import dynamo/internal/attributes/parser.{attribute_value_to_json, key}
+import dynamo/types/attributes.{type AttributeValue, String}
 import dynamo/operations/get.{get_item}
 import dynamo/types/builders.{type GetBuilder, GetBuilder}
 import dynamo/types/client.{type DynamoClient}
@@ -6,7 +7,6 @@ import dynamo/types/error.{type DynamoError}
 import gleam/dict.{type Dict}
 import gleam/http/response
 import gleam/json
-import gleam/option.{None, Some}
 
 pub fn get_req(
   client: DynamoClient,

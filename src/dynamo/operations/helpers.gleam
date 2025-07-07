@@ -1,9 +1,6 @@
-import dynamo/types/builders.{type GetBuilder}
 import dynamo/types/client.{type DynamoClient}
-import dynamo/types/error.{type DynamoError, HttpError, UriError}
 import gleam/bit_array
 
-// <--- Make sure this is imported!
 import aws4_request
 import gleam/http
 import gleam/http/request.{type Request}

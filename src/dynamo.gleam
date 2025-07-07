@@ -6,7 +6,6 @@ import dynamo/types/error.{handle_error}
 import gleam/bit_array
 import gleam/int
 import gleam/io
-import gleam/result
 
 pub fn main() {
   let access_key = ""

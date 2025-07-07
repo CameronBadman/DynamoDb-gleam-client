@@ -1,18 +1,13 @@
 import dynamo/operations/helpers.{create_request}
 import dynamo/types/builders.{type GetBuilder}
-import dynamo/types/client.{DynamoClient}
 import dynamo/types/error.{
-  type DynamoError, HttpError, RequestBuildError, UriError,
+  type DynamoError, HttpError, RequestBuildError,
 }
-import gleam/bit_array
 import gleam/dict
-import gleam/http
-import gleam/http/request
 import gleam/http/response
 import gleam/httpc
 import gleam/json
 import gleam/result
-import gleam/string
 
 pub fn get_item(
   builder: GetBuilder,
@@ -21,7 +16,7 @@ pub fn get_item(
 
   use request <- result.try(
     create_request(builder.client, "GetItem", json_body)
-    |> result.map_error(fn(err) -> DynamoError { RequestBuildError }),
+    |> result.map_error(fn(_) -> DynamoError { RequestBuildError }),
   )
 
   use response <- result.try(

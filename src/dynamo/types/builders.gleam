@@ -1,7 +1,9 @@
 import dynamo/types/client.{type DynamoClient}
+import dynamo/types/attributes.{type AttributeValue}
 import gleam/dict.{type Dict}
 import gleam/json
-import gleam/option.{type Option}
+
+
 
 pub type GetBuilder {
   GetBuilder(
@@ -10,3 +12,13 @@ pub type GetBuilder {
     json_fields: Dict(String, json.Json),
   )
 }
+
+pub type PutBuilder {
+  PutBuilder(
+    client: DynamoClient,
+    item_attributes: Dict(String, AttributeValue),
+    json: Dict(String, json.Json)
+  )
+}
+
+
