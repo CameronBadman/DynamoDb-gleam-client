@@ -8,6 +8,7 @@ import dynamo/types/attributes.{
 import gleam/dict.{type Dict}
 import gleam/json
 import gleam/list
+import gleam/string
 
 // Convert AttributeValue to JSON
 pub fn attribute_value_to_json(value: AttributeValue) -> json.Json {
@@ -46,4 +47,22 @@ pub fn attribute_value_to_json(value: AttributeValue) -> json.Json {
 
 pub fn key(key_name: String, key_value: String) -> json.Json {
   json.object([#(key_name, attribute_value_to_json(String(key_value)))])
+}
+
+
+// Pretty print JSON with indentation
+pub fn pretty_print_json(json_value: json.Json) -> String {
+  json_value
+  |> json.to_string
+  |> format_json_string(0)
+}
+
+// Simple JSON formatter (basic indentation)
+fn format_json_string(json_str: String, indent: Int) -> String {
+  let indent_str = string.repeat(" ", indent)
+  json_str
+  |> string.replace("{", "{\n" <> string.repeat(" ", indent + 2))
+  |> string.replace("}", "\n" <> indent_str <> "}")
+  |> string.replace(",", ",\n" <> string.repeat(" ", indent + 2))
+  |> string.replace(":", ": ")
 }
