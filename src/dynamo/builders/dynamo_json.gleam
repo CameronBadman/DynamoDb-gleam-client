@@ -51,3 +51,12 @@ pub fn add_list(
 ) -> Dict(String, AttributeValue) {
   dict.insert(attrs, key, List(values))
 }
+
+pub fn add_map(
+  attrs: Dict(String, AttributeValue),
+  key: String,
+  values: Dict(String, AttributeValue),
+) -> Dict(String, AttributeValue) {
+  dict.insert(attrs, key, Map(values))
+}
+

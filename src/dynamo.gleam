@@ -10,7 +10,7 @@ import dynamo/types/attributes.{
 }
 
 import dynamo/builders/dynamo_json.{
-  add_number, add_string_set, add_number_set
+  add_number, add_string_set, add_number_set, add_map
 
 }
 import dynamo/types/error.{handle_error}
@@ -39,6 +39,10 @@ pub fn main() {
   let object = dict.new()
     |>add_number("test", 1)
     |>add_number_set("test1", [1, 2, 3, 4])
+    |>add_map("map", 
+    dict.new() 
+    |>add_number_set("mapping_test", [1, 2, 3, 4])
+    )
     |>Map
 
   // Convert to DynamoDB JSON format
