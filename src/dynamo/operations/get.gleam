@@ -1,8 +1,6 @@
 import dynamo/operations/helpers.{create_request}
-import dynamo/types/builders.{type GetBuilder}
-import dynamo/types/error.{
-  type DynamoError, HttpError, RequestBuildError,
-}
+import dynamo/types/builders.{type DynamoReq}
+import dynamo/types/error.{type DynamoError, HttpError, RequestBuildError}
 import gleam/dict
 import gleam/http/response
 import gleam/httpc
@@ -10,7 +8,7 @@ import gleam/json
 import gleam/result
 
 pub fn get_item(
-  builder: GetBuilder,
+  builder: DynamoReq,
 ) -> Result(response.Response(BitArray), DynamoError) {
   let json_body = json.object(dict.to_list(builder.json_fields))
 

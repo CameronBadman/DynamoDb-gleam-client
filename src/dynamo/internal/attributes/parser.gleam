@@ -1,10 +1,8 @@
-import gleam/bit_array
 import dynamo/types/attributes.{
-  type AttributeValue, 
-  String, Number, Binary, Bool, Null, 
-  StringSet, NumberSet, BinarySet, 
-  List, Map
+  type AttributeValue, Binary, BinarySet, Bool, List, Map, Null, Number,
+  NumberSet, String, StringSet,
 }
+import gleam/bit_array
 import gleam/dict.{type Dict}
 import gleam/json
 import gleam/list
@@ -48,7 +46,6 @@ pub fn attribute_value_to_json(value: AttributeValue) -> json.Json {
 pub fn key(key_name: String, key_value: String) -> json.Json {
   json.object([#(key_name, attribute_value_to_json(String(key_value)))])
 }
-
 
 // Pretty print JSON with indentation
 pub fn pretty_print_json(json_value: json.Json) -> String {

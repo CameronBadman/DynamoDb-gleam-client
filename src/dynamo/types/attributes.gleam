@@ -17,6 +17,3 @@ pub type AttributeValue {
   List(List(AttributeValue))
   Map(Dict(String, AttributeValue))
 }
-
-
-

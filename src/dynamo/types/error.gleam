@@ -10,6 +10,7 @@ pub type DynamoError {
   ParseError(String)
   UnsupportedType
   InvalidFormat
+  BuilderError(String)
 }
 
 pub fn handle_error(error: DynamoError) -> String {
@@ -24,5 +25,6 @@ pub fn handle_error(error: DynamoError) -> String {
     ParseError(msg) -> "ParseError: " <> msg
     UnsupportedType -> "UnsupportedType"
     InvalidFormat -> "InvalidFormat"
+    BuilderError(msg) -> "BuilderError: " <> msg
   }
 }

@@ -11,14 +11,12 @@ pub fn build(
     _, "" -> Error(ValidationError("secret_access_key cannot be empty"))
 
     access_key_id, secret_access_key ->
-      Ok(
-        DynamoClient(
-          access_key_id: access_key_id,
-          secret_access_key: secret_access_key,
-          region: "us-east-1",
-          domain: "amazonaws.com",
-        )
-      )
+      Ok(DynamoClient(
+        access_key_id: access_key_id,
+        secret_access_key: secret_access_key,
+        region: "us-east-1",
+        domain: "amazonaws.com",
+      ))
   }
 }
 
