@@ -16,4 +16,5 @@ pub type AttributeValue {
   BinarySet(List(BitArray))
   List(List(AttributeValue))
   Map(Dict(String, AttributeValue))
+  Json(Dict(String, AttributeValue))
 }

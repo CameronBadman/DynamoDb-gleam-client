@@ -23,32 +23,37 @@ pub fn with_composite_key(
 ) -> DynamoReq {
   case builder.operation {
     Get | Update | Delete -> {
-      // Add to metadata
-      let key_to_add = attribute_value_to_json(key_value)
-      let updated_metadata = case dict.get(builder.metadata, "CompositeKey") {
-        Ok(CompositeKey(existing_keys)) -> 
-          dict.insert(builder.metadata, "CompositeKey", 
-            CompositeKey(dict.insert(existing_keys, key_name, key_to_add)))
-        Error(_) -> 
-          dict.insert(builder.metadata, "CompositeKey", 
-            CompositeKey(dict.new() |> dict.insert(key_name, key_to_add)))
+      case key_value {
+        String(_) | Number(_) | Binary(_) -> {
+          // Add to metadata
+          let key_to_add = attribute_value_to_json(key_value)
+          let updated_metadata = case dict.get(builder.metadata, "CompositeKey") {
+            Ok(CompositeKey(existing_keys)) -> 
+              dict.insert(builder.metadata, "CompositeKey", 
+                CompositeKey(dict.insert(existing_keys, key_name, key_to_add)))
+            Error(_) -> 
+              dict.insert(builder.metadata, "CompositeKey", 
+                CompositeKey(dict.new() |> dict.insert(key_name, key_to_add)))
+          }
+          
+          // Rebuild the Key field in json_fields
+          let key_dict = case dict.get(updated_metadata, "CompositeKey") {
+            Ok(CompositeKey(keys)) -> keys
+            Error(_) -> dict.new()
+          }
+          
+          let json_key = json.object(dict.to_list(key_dict))
+          let updated_json_fields = dict.insert(builder.json_fields, "Key", json_key)
+          
+          DynamoReq(
+            client: builder.client,
+            operation: builder.operation,
+            json_fields: updated_json_fields,
+            metadata: updated_metadata
+          )
+        }
+        _ -> builder  // Invalid key type, return unchanged
       }
-      
-      // Rebuild the Key field in json_fields
-      let key_dict = case dict.get(updated_metadata, "CompositeKey") {
-        Ok(CompositeKey(keys)) -> keys
-        Error(_) -> dict.new()
-      }
-      
-      let json_key = json.object(dict.to_list(key_dict))
-      let updated_json_fields = dict.insert(builder.json_fields, "Key", json_key)
-      
-      DynamoReq(
-        client: builder.client,
-        operation: builder.operation,
-        json_fields: updated_json_fields,
-        metadata: updated_metadata
-      )
     }
     _ -> builder
   }

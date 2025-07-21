@@ -13,7 +13,7 @@ pub fn get_item(
   let json_body = json.object(dict.to_list(builder.json_fields))
 
   use request <- result.try(
-    create_request(builder.client, "GetItem", json_body)
+    create_request(builder)
     |> result.map_error(fn(_) -> DynamoError { RequestBuildError }),
   )
 

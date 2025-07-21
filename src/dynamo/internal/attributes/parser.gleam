@@ -1,6 +1,6 @@
 import dynamo/types/attributes.{
   type AttributeValue, Binary, BinarySet, Bool, List, Map, Null, Number,
-  NumberSet, String, StringSet,
+  NumberSet, String, StringSet, Json
 }
 import gleam/bit_array
 import gleam/dict.{type Dict}
@@ -41,6 +41,16 @@ pub fn attribute_value_to_json(value: AttributeValue) -> json.Json {
         })
         |> json.object
       json.object([#("M", map_json)])
+    }
+    Json(dict) -> {
+      dict
+      |> dict.to_list
+      |> list.map(fn(pair) {
+        let #(key, value) = pair
+        #(key, attribute_value_to_json(value))
+      })
+      |> json.object
+      // No outer wrapper - direct JSON object!
     }
   }
 }
