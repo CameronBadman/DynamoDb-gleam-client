@@ -16,15 +16,27 @@ pub fn new() -> Dict(String, AttributeValue) {
   dict.new()
 }
 
-pub fn add_string(attrs: Dict(String, AttributeValue), key: String, value: String) -> Dict(String, AttributeValue) {
+pub fn add_string(
+  attrs: Dict(String, AttributeValue),
+  key: String,
+  value: String,
+) -> Dict(String, AttributeValue) {
   dict.insert(attrs, key, String(value))
 }
 
-pub fn add_number(attrs: Dict(String, AttributeValue), key: String, value: Int) -> Dict(String, AttributeValue) {
+pub fn add_number(
+  attrs: Dict(String, AttributeValue),
+  key: String,
+  value: Int,
+) -> Dict(String, AttributeValue) {
   dict.insert(attrs, key, value |> int.to_string |> Number)
 }
 
-pub fn add_bool(attrs: Dict(String, AttributeValue), key: String, value: Bool) -> Dict(String, AttributeValue) {
+pub fn add_bool(
+  attrs: Dict(String, AttributeValue),
+  key: String,
+  value: Bool,
+) -> Dict(String, AttributeValue) {
   dict.insert(attrs, key, Bool(value))
 }
 
@@ -59,4 +71,3 @@ pub fn add_map(
 ) -> Dict(String, AttributeValue) {
   dict.insert(attrs, key, Map(values))
 }
-

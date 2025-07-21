@@ -7,6 +7,8 @@ import gleam/dict.{type Dict}
 import gleam/json
 import gleam/list
 import gleam/string
+import gleam/dynamic
+import gleam/result
 
 // Convert AttributeValue to JSON
 pub fn attribute_value_to_json(value: AttributeValue) -> json.Json {
