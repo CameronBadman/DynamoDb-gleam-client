@@ -1,9 +1,8 @@
 import dynamo/types/attributes.{type AttributeValue}
 import dynamo/types/client.{type DynamoClient}
-import dynamo/types/operations.{type Operation, type Metadata}
+import dynamo/types/operations.{type Metadata, type Operation}
 import gleam/dict.{type Dict}
 import gleam/json
-
 
 pub type DynamoReq {
   DynamoReq(

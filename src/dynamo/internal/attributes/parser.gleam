@@ -1,14 +1,14 @@
 import dynamo/types/attributes.{
-  type AttributeValue, Binary, BinarySet, Bool, List, Map, Null, Number,
-  NumberSet, String, StringSet, Json
+  type AttributeValue, Binary, BinarySet, Bool, Json, List, Map, Null, Number,
+  NumberSet, String, StringSet,
 }
 import gleam/bit_array
 import gleam/dict.{type Dict}
+import gleam/dynamic
 import gleam/json
 import gleam/list
-import gleam/string
-import gleam/dynamic
 import gleam/result
+import gleam/string
 
 // Convert AttributeValue to JSON
 pub fn attribute_value_to_json(value: AttributeValue) -> json.Json {

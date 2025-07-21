@@ -13,7 +13,6 @@ pub type Operation {
   Scan
 }
 
-
 pub type Metadata {
   CompositeKey(Dict(String, json.Json))
 }
