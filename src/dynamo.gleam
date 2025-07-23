@@ -1,6 +1,6 @@
-import dynamo/builders/get.{exec, get_req, put_req}
+import dynamo/builders/get.{exec, get_req, put_req, del_req}
 import dynamo/client
-import dynamo/internal/attributes/parser.{attribute_value_to_json}
+import dynamo/internal/attributes/parser.{attribute_value_to_json, pretty_print_json}
 import dynamo/options/options.{with_composite_key}
 import dynamo/types/attributes.{Bool, Json, Map, Number, NumberSet, String}
 
@@ -49,9 +49,11 @@ pub fn main() {
     )
     |> Json
 
+  
+
   let get_result =
     client
-    |> put_req("gleam-test-table", object)
+    |> put_req("gleam-test-table", object1)
     |> exec()
 
   case get_result {
