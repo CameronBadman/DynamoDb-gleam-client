@@ -114,10 +114,11 @@ pub fn update_req(
     |> dict.insert("TableName", json.string(table_name))
     |> dict.insert("Key", json_key)
     |> dict.insert("UpdateExpression", json.string(expression))
+    |> dict.insert("ExpressionAttributeValues", attribute_value_to_json(item))
 
   DynamoReq(
     client: client,
-    operation: Delete,
+    operation: Update,
     json_fields: base_json,
     metadata: metadata,
   )
@@ -127,7 +128,7 @@ pub fn exec(req: DynamoReq) -> Result(response.Response(BitArray), DynamoError) 
   case req.operation {
     Get -> get_item(req)
     Put -> get_item(req)
-    Update -> todo as "implement update_item(req)"
+    Update -> get_item(req)
     Delete -> get_item(req)
     Query -> todo as "implement query(req)"
     Scan -> todo as "implement scan(req)"

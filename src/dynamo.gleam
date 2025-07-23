@@ -1,4 +1,4 @@
-import dynamo/builders/get.{exec, get_req, put_req, del_req}
+import dynamo/builders/get.{exec, get_req, update_req, put_req, del_req}
 import dynamo/client
 import dynamo/internal/attributes/parser.{attribute_value_to_json, pretty_print_json}
 import dynamo/options/options.{with_composite_key}
@@ -49,11 +49,16 @@ pub fn main() {
     )
     |> Json
 
+  let update_object = 
+    dict.new()
+    |> add(":val1", Number("30"))
+    |> Json
+
   
 
   let get_result =
     client
-    |> put_req("gleam-test-table", object1)
+    |> update_req("gleam-test-table", "id", "test2", "SET age = :val1", update_object)
     |> exec()
 
   case get_result {
